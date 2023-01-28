@@ -1,0 +1,57 @@
+<html>
+
+<head>
+</head>
+
+<body>
+
+    <h1> My first WWW</h1>
+    <p>This is my first HTML test</p>
+    <p id="first_sec"> I Love you </p>
+
+
+    <button onclick="myButtonAction()">登入按我</button>
+    <button onclick="checkButton()">認證</button>
+    <button onclick="readutton()">讀</button>
+
+
+
+    <script>
+        window.onload = handleClientLoad;
+
+
+        function handleClientLoad() {
+            gapi.load('client:auth2', initClient);
+        }
+        function initClient() {
+            gapi.client.init({
+                apiKey: 'AIzaSyBCENLwsn6dJf-43XZCd_tdHiCELuB1vdc',
+                clientId: '373405066736-cpem0ia2surmof01iup192o4q9kbtb06.apps.googleusercontent.com',
+                scope: 'https://www.googleapis.com/auth/drive',
+                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+            }).then(function () {
+                // Listen for sign-in state changes
+                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                // Handle the initial sign-in state
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            });
+        }
+
+        function myButtonAction() {
+            gapi.auth2.getAuthInstance().signIn();
+        }
+
+        function readutton() {
+            gapi.client.drive.files.list({
+                'pageSize': 10,
+                'fields': "nextPageToken, files(id, name)"
+            }).then(function (response) {
+                console.log(response.result.files);
+            });
+        }
+
+    </script>
+    <script src="https://apis.google.com/js/api.js"></script>
+</body>
+
+</html>
